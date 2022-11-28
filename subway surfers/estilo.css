@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.game-board{
+    width: 80%;
+    height: 500px;
+    border: 1px solid #333;
+    margin: 0 auto;
+}
+.obs{
+    position: absolute;
+    bottom: 150px;
+    width: 80px;
+    background-color: rgb(167, 148, 148);
+    right:0px;
+}
