@@ -1,57 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dejair kart</title>
-    <link rel="icon" href="dejacaricon.ico">
-    <link rel="stylesheet" href="style.css">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+
+
+    <title>Dash</title>
+  <link rel="icon" href="dejacaricon.ico">
+  <link rel="stylesheet" href="style.css">
+
+
+
     <script>
-        window.console = window.console || function (t) {};
-      </script>
-  
-      <script>
-        if (document.location.search.match(/type=embed/gi)) {
-          window.parent.postMessage("resize", "*");
-        }
-      </script>
-</head>
-<body>
+      window.console = window.console || function (t) {};
+    </script>
+
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+    </script>
+  </head>
+
+  <body translate="no">
     <div id="game">
-        <div id="road">
-            <div id="cloud"></div>
-            <div id="hero"></div>
-        </div>
+      <div id="road">
+        <div id="cloud"></div>
+        <div id="hero"></div>
+      </div>
 
-        <div id="hud">
-            <span id="time" class="topUI">0</span>
-            <span id="score" class="topUI">0</span>
-            <span id="lap" class="topUI">0'00"000</span>
-            <span id="tacho">0</span>
-         </div>
+      <div id="hud">
+        <span id="time" class="topUI">0</span>
+        <span id="score" class="topUI">0</span>
+        <span id="lap" class="topUI">0'00"000</span>
+        <span id="tacho">0</span>
+      </div>
 
-        <div id="home">
-            <h1>Corridinha</h1>
-            <p id="text"></p>
+      <div id="home">
+        <h1>Dash</h1>
+        <p id="text"></p>
 
-            <div id="highscore"></div>
-        </div>
-
+        <div id="highscore"></div>
+      </div>
     </div>
+
     <div id="controls">
-        <span><span>C</span>Dejair-GO</span>
-        <span><span>M</span>mudo</span>
-        <span><span>&lt;</span><span>&gt;</span>andar</span>
-        <span><span>&lt;</span><span>&gt;</span>acelerar</span>
+      <span><span>C</span>insert coin</span>
+      <span><span>M</span>mute</span>
+      <span><span>&lt;</span><span>&gt;</span>move</span>
+      <span><span>&lt;</span><span>&gt;</span>accelerate</span>
     </div>
-
-
     <script src="javascript/script.js"></script>
-    <script id="redered-js">
-        //assets
 
-        const ASSETS = {
+    <script id="rendered-js">
+      // ------------------------------------------------------------
+      // assets
+      // ------------------------------------------------------------
+
+      const ASSETS = {
         COLOR: {
           TAR: ["#959298", "#9c9a9d"],
           RUMBLE: ["#959298", "#f5f2f6"],
@@ -60,32 +66,32 @@
 
         IMAGE: {
           TREE: {
-            src: "images/tree.png",
+            src: "imgs/tree.png",
             width: 132,
             height: 192,
           },
 
           HERO: {
-            src: "images/hero.png",
+            src: "imgs/hero.png",
             width: 110,
             height: 56,
           },
 
           CAR: {
-            src: "images/car04.png",
+            src: "imgs/car04.png",
             width: 50,
             height: 36,
           },
 
           FINISH: {
-            src: "images/finish.png",
+            src: "imgs/finish.png",
             width: 339,
             height: 180,
             offset: -0.5,
           },
 
           SKY: {
-            src: "images/cloud.jpg",
+            src: "imgs/cloud.jpg",
           },
         },
 
@@ -98,17 +104,21 @@
           beep: "https://s3-us-west-2.amazonaws.com/s.cdpn.io/155629/beep.wav",
         },
       };
-        
-      //Helper functions
 
-      Number.prototype.pad = function (numZeros, char = 0){
+      // ------------------------------------------------------------
+      // helper functions
+      // ------------------------------------------------------------
+
+      Number.prototype.pad = function (numZeros, char = 0) {
         let n = Math.abs(this);
         let zeros = Math.max(0, numZeros - Math.floor(n).toString().length);
-        .toString()
-        .substr(1)
-        .replace(0, char);
+        let zeroString = Math.pow(10, zeros)
+          .toString()
+          .substr(1)
+          .replace(0, char);
         return zeroString + n;
       };
+
       Number.prototype.clamp = function (min, max) {
         return Math.max(min, Math.min(this, max));
       };
@@ -117,11 +127,16 @@
       const accelerate = (v, accel, dt) => v + accel * dt;
       const isCollide = (x1, w1, x2, w2) => (x1 - x2) ** 2 <= (w2 + w1) ** 2;
 
-      function randowProperty(obj) {
-        let kews = Object.kews(obj);
+      function getRand(min, max) {
+        return (Math.random() * (max - min) + min) | 0;
+      }
+
+      function randomProperty(obj) {
+        let keys = Object.keys(obj);
         return obj[keys[(keys.length * Math.random()) << 0]];
       }
-      function drawQuad(element, layer, color, x1, y1, w1, x2, y2, w2){
+
+      function drawQuad(element, layer, color, x1, y1, w1, x2, y2, w2) {
         element.style.zIndex = layer;
         element.style.background = color;
         element.style.top = y2 + `px`;
@@ -129,11 +144,12 @@
         element.style.width = w1 * 3 + `px`;
         element.style.height = y1 - y2 + `px`;
 
-        let leftoffset = w1 + x2 + x1 + Math.abs(w2 / 2 - w1 / 2);
+        let leftOffset = w1 + x2 - x1 + Math.abs(w2 / 2 - w1 / 2);
         element.style.clipPath = `polygon(${leftOffset}px 0, ${
           leftOffset + w2
         }px 0, 66.66% 100%, 33.33% 100%)`;
       }
+
       const KEYS = {};
       const keyUpdate = (e) => {
         KEYS[e.code] = e.type === `keydown`;
@@ -761,7 +777,8 @@
       }
 
       init();
-
+      //# sourceURL=pen.js
     </script>
-</body>
+    <script src="javascript/null.js"></script>
+  </body>
 </html>

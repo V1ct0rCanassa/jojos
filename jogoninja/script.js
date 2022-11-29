@@ -333,7 +333,7 @@ Array.prototype.last = function () {
   function drawPlatforms() {
     platforms.forEach(({ x, w }) => {
       // Desenha a plataforma
-      ctx.fillStyle = "gray";
+      ctx.fillStyle = "white";
       ctx.fillRect(
         x,
         canvasHeight - platformHeight,
@@ -343,7 +343,7 @@ Array.prototype.last = function () {
   
       // Desenhe a área perfeita somente se o herói ainda não alcançou a plataforma
       if (sticks.last().x < x) {
-        ctx.fillStyle = "orange";
+        ctx.fillStyle = "red";
         ctx.fillRect(
           x + w / 2 - perfectAreaSize / 2,
           canvasHeight - platformHeight,
@@ -356,7 +356,7 @@ Array.prototype.last = function () {
   
   function drawHero() {
     ctx.save();
-    ctx.fillStyle = "green";
+    ctx.fillStyle = "black";
     ctx.translate(
       heroX - heroWidth / 2,
       heroY + canvasHeight - platformHeight - heroHeight / 2
@@ -372,7 +372,7 @@ Array.prototype.last = function () {
     );
   
     // Legs
-    const legDistance = 5;
+    const legDistance = 10;
     ctx.beginPath();
     ctx.arc(legDistance, 11.5, 3, 0, Math.PI * 2, false);
     ctx.fill();
